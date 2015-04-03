@@ -33,12 +33,6 @@ appropriate config items. This includes the `token`, `owner`, and `team`
     AuthorizedKeysCommandUser deploy
     # or root if you're feelin' gutsy
 
-## Running
-
-You need to do the following
-
-   $ make install
-
 ## Notes
 
 - Keys aren't cached, so every SSH authentication request makes several API
