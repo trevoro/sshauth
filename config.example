@@ -1,0 +1,5 @@
+{
+  "token": "your_oauth_token_goes_here",
+  "owner": "user_or_organization_name",
+  "team": "name_of_your_team"
+}
