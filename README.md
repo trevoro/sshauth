@@ -25,7 +25,7 @@ You need to do **4 things** to make this work
 1. Create a Github OAuth Token with a descriptive name.
 2. Create a team with a descriptive name and add members to that team.
 3. Copy the `config.example` to `/etc/sshauth/config.json` and fill out the
-appropriate config items. This includes the `token`, `groupname`, and `teamName`
+appropriate config items. This includes the `token`, `owner`, and `team`
 4. Edit your `/etc/ssh/sshd_config` file and add the following two stanzas:
 
     AuthorizedKeysCommand /usr/local/sbin/sshauth
