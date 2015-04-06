@@ -1,7 +1,13 @@
 # SSHAuth
 
-SSHAuth is a tool that lets you control and manage SSH `authorized_keys` files
-using the Github Teams API.
+SSHAuth is a tool that lets you control SSH login access using the Github Team
+API. It makes it easy to
+
+* Control access to a machine using SSH
+* Revoke access to a machine or group of machines
+* Eliminate the need to manage `authorized_keys` files
+
+## Background
 
 OpenSSH version 6.6 introduced this nifty config option that makes it possible
 to run a command that will produce a users `authorized_keys` file. This means that
