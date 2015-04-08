@@ -7,31 +7,6 @@ API. It makes it easy to
 * Revoke access to a machine or group of machines
 * Eliminate the need to manage `authorized_keys` files
 
-## Background
-
-OpenSSH version 6.6 introduced this nifty config option that makes it possible
-to run a command that will produce a users `authorized_keys` file. This means that
-instead of manually managing your `authorized_keys` file on a server you could
-just write a command that does it for you. You could collapse a directory layout
-so that keys are kept per file, hit a remote endpoint or API, or something else
-creative.
-
-The idea is simple enough: Create a team in your Github Organization called
-“ssh” or something, and then get all the SSH keys for the users in that team.
-This way, when you need to revoke access to a machine you can just remove
-someone from the “ssh” group and you’re done.
-
-The `AuthorizedKeysCommand` option in SSH is just a first pass. If the keys it
-returns are not present for a user, it will continue to use the default
-`authorized_keys` file. That means you could have a backup or master key on all
-the servers, but individual user keys could still be fetched from Github.
-
-You probably don't want to use this in production, but this was a fun and (very)
-quick experiment. If you seriously want to use it, make sure you combine this
-tool with something like
-[DenyHosts](http://denyhosts.sourceforge.net/ssh_config.html) so that
-brute-force attempts don't hammer the Github API.
-
 ## Getting Started
 
 Building `sshauth` requires `go`.
@@ -63,3 +38,30 @@ appropriate config items. This includes the `token`, `owner`, and `team`
   _could_ run through your API requests (you get 5000/hour)
 - There is no run-time enforcement on permissions of your config file. Be
   careful.
+
+## Background
+
+OpenSSH version 6.6 introduced this nifty config option that makes it possible
+to run a command that output a list of valid SSH public keys, similar to the
+`authorized_keys` file. This means that instead of manually managing your
+`authorized_keys` file on a server SSH can just run a command that does it for
+you. You could collapse a directory layout so that keys are kept per file, hit a
+remote endpoint or API, or something else creative.
+
+Building on this idea is simple enough: Create a team in your Github
+Organization called “ssh” or something, and then get all the SSH keys for the
+users in that team.  This way, when you need to revoke access to a machine you
+can just remove someone from the “ssh” group and you’re done.
+
+The `AuthorizedKeysCommand` option in SSH is just a first pass. If the keys it
+returns are not present for a user, it will continue to use the default
+`authorized_keys` file. That means you could have a backup or master key on all
+the servers, but individual user keys could still be fetched from Github.
+
+If you use this in production, make sure you combine this tool with something
+like [DenyHosts](http://denyhosts.sourceforge.net/ssh_config.html) so that
+brute-force attempts don't hammer the Github API.
+
+You should also make sure you have a backup key in your
+`/root/.ssh/authorized_keys` file, so that if the command doesn't work, or if
+the Github API is unavailable, you aren't locked out of your machine.
