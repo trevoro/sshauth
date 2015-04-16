@@ -11,10 +11,12 @@ API. It makes it easy to
 
 Building `sshauth` requires `go`.
 
-You then need to install dependencies and build:
-
     $ make setup
     $ make && sudo make install
+
+You can optionally use `go get` to download and build sshauth. It's up to you
+what system you choose to use. See the `Makefile` for more information on how to
+setup the binary so that its permissions satisfy the requirements of `sshd`.
 
 ## Configuration 
 
