@@ -15,6 +15,12 @@ You then need to install dependencies and build:
 
     $ make setup
     $ make && sudo make install
+    
+or
+
+    $  go get github.com/trevoro/sshauth
+    $  go install github.com/trevoro/sshauth
+
 
 ## Configuration 
 
