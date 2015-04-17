@@ -8,22 +8,20 @@ import (
 	"os"
 )
 
-const (
-	DEFAULT_CONFIG = "/etc/sshauth/config.json"
-)
+const defaultConfig = "/etc/sshauth/config.json"
 
-type Config struct {
+type config struct {
 	Token string
 	Owner string
 	Team  string
 }
 
-func loadConfig(file string) Config {
+func loadConfig(file string) config {
 	f, err := os.Open(file)
 	exitIf(err)
 
 	decoder := json.NewDecoder(f)
-	config := Config{}
+	config := config{}
 	err = decoder.Decode(&config)
 	exitIf(err)
 
@@ -37,7 +35,7 @@ func exitIf(err error) {
 }
 
 func main() {
-	var configFile = flag.String("config", DEFAULT_CONFIG, "path to a JSON config file")
+	var configFile = flag.String("config", defaultConfig, "path to a JSON config file")
 	flag.Parse()
 
 	config := loadConfig(*configFile)
