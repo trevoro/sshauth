@@ -13,6 +13,12 @@ Building `sshauth` requires `go`.
 
     $ make setup
     $ make && sudo make install
+    
+or
+
+    $  go get github.com/trevoro/sshauth
+    $  go install github.com/trevoro/sshauth
+
 
 You can optionally use `go get` to download and build sshauth. It's up to you
 what system you choose to use. See the `Makefile` for more information on how to
