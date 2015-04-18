@@ -9,7 +9,6 @@ build: $(GO)
 setup: $(GO)
 	$(GO) get "github.com/google/go-github/github"
 	$(GO) get "golang.org/x/oauth2" 
-	$(GO) get "golang.org/x/net/context" 
 
 clean:
 	rm -f $(bin)

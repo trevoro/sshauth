@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/google/go-github/github"
-	"golang.org/x/net/context"
 	"golang.org/x/oauth2"
 	"strings"
 )
@@ -78,6 +77,6 @@ func (c *GithubClient) GetTeamKeys(users []github.User) []github.Key {
 }
 
 func NewGithubClient(token, owner string) GithubClient {
-	c := oauth2.NewClient(context.TODO(), newAccessToken(token))
+	c := oauth2.NewClient(oauth2.NoContext, newAccessToken(token))
 	return GithubClient{client: *github.NewClient(c), owner: owner}
 }
