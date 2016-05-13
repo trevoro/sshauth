@@ -2,10 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/google/go-github/github"
 )
 
 const (
@@ -13,9 +16,10 @@ const (
 )
 
 type Config struct {
-	Token string
-	Owner string
-	Team  string
+	Token  string
+	Owner  string `json:",omitempty"`
+	Team   string `json:",omitempty"`
+	TeamID int    `json:"team_id,omitempty"`
 }
 
 func loadConfig(file string) Config {
@@ -44,7 +48,17 @@ func main() {
 
 	c := NewGithubClient(config.Token, config.Owner)
 
-	users, err := c.GetTeamMembers(config.Team)
+	var (
+		users []github.User
+		err   error
+	)
+	if config.TeamID != 0 {
+		users, err = c.GetTeamMembersByID(config.TeamID)
+	} else if config.Team != "" {
+		users, err = c.GetTeamMembers(config.Team)
+	} else {
+		err = errors.New("Either team_id or team must be specified in config.json, but both were empty")
+	}
 	exitIf(err)
 
 	keys := c.GetTeamKeys(users)
