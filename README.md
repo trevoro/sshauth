@@ -39,6 +39,22 @@ appropriate config items. This includes the `token`, `owner`, and `team`
     AuthorizedKeysCommandUser deploy
     # or root if you're feelin' gutsy
 
+## Team ID
+
+Optionally, change config.json's `team` to `team_id` and specify the ID of your team. By using the team ID rather than the team name, sshauth will continue to work as before in the event you rename your team. If you specify both `team` and `team_id`, only the `team_id` will be honored. Example:
+
+    {
+      "token" : "your oauth token here",
+      "owner" : "user or owner name here",
+      "team_id": 1234567
+    }
+
+To find a team ID, create [a personal OAuth token](https://github.com/settings/tokens) then use it to make an API request:
+
+    curl -H "Authorization: token <YOUR OAUTH TOKEN HERE>" https://api.github.com/orgs/<YOUR ORG HERE>/teams
+
+Make sure to replace `<YOUR OAUTH TOKEN HERE>` with a personal oauth token, and `<YOUR ORG HERE>` with the organization that owns the team. For more information on the github API, see the [official documentation](https://developer.github.com/v3/orgs/teams/#list-teams).
+
 ## Notes
 
 - Keys aren't cached, so every SSH authentication request makes several API
