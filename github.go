@@ -1,9 +1,10 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
-	"strings"
 )
 
 //- naive oauth setup
@@ -29,6 +30,11 @@ type GithubClient struct {
 func (c *GithubClient) GetKeys(user github.User) ([]github.Key, error) {
 	keys, _, err := c.client.Users.ListKeys(*user.Login, nil)
 	return keys, err
+}
+
+func (c *GithubClient) GetTeamMembersByID(teamID int) ([]github.User, error) {
+	users, _, err := c.client.Organizations.ListTeamMembers(teamID, nil)
+	return users, err
 }
 
 func (c *GithubClient) GetTeamMembers(name string) ([]github.User, error) {
