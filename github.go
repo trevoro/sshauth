@@ -27,18 +27,18 @@ type GithubClient struct {
 	owner  string
 }
 
-func (c *GithubClient) GetKeys(user github.User) ([]github.Key, error) {
+func (c *GithubClient) GetKeys(user github.User) ([]*github.Key, error) {
 	keys, _, err := c.client.Users.ListKeys(*user.Login, nil)
 	return keys, err
 }
 
-func (c *GithubClient) GetTeamMembersByID(teamID int) ([]github.User, error) {
+func (c *GithubClient) GetTeamMembersByID(teamID int) ([]*github.User, error) {
 	users, _, err := c.client.Organizations.ListTeamMembers(teamID, nil)
 	return users, err
 }
 
-func (c *GithubClient) GetTeamMembers(name string) ([]github.User, error) {
-	var team github.Team
+func (c *GithubClient) GetTeamMembers(name string) ([]*github.User, error) {
+	var team *github.Team
 	teams, _, err := c.client.Organizations.ListTeams(c.owner, nil)
 	if err != nil {
 		panic(err)
@@ -53,9 +53,9 @@ func (c *GithubClient) GetTeamMembers(name string) ([]github.User, error) {
 	return users, err
 }
 
-func (c *GithubClient) GetTeamKeys(users []github.User) []github.Key {
-	ch := make(chan []github.Key)
-	keys := []github.Key{}
+func (c *GithubClient) GetTeamKeys(users []*github.User) []*github.Key {
+	ch := make(chan []*github.Key)
+	keys := []*github.Key{}
 	remaining := len(users)
 
 	for _, user := range users {
@@ -65,7 +65,7 @@ func (c *GithubClient) GetTeamKeys(users []github.User) []github.Key {
 				panic(err)
 			}
 			ch <- k
-		}(user)
+		}(*user)
 	}
 
 	for {

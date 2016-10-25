@@ -49,7 +49,7 @@ func main() {
 	c := NewGithubClient(config.Token, config.Owner)
 
 	var (
-		users []github.User
+		users []*github.User
 		err   error
 	)
 	if config.TeamID != 0 {
