@@ -45,7 +45,7 @@ func (c *GithubClient) GetTeamMembersByID(teamID int) ([]*github.User, error) {
 
 	var allMembers []*github.User
 	for {
-		members, resp, err := c.client.Organizations.ListTeamMembers(teamID, nil)
+		members, resp, err := c.client.Organizations.ListTeamMembers(teamID, opt)
 		if err != nil {
 			return nil, err
 		}
