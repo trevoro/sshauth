@@ -7,6 +7,10 @@ import (
 	"golang.org/x/oauth2"
 )
 
+const (
+	MAX_PAGE_SIZE = 100
+)
+
 //- naive oauth setup
 type AccessToken struct {
 	token *oauth2.Token
@@ -33,8 +37,27 @@ func (c *GithubClient) GetKeys(user github.User) ([]*github.Key, error) {
 }
 
 func (c *GithubClient) GetTeamMembersByID(teamID int) ([]*github.User, error) {
-	users, _, err := c.client.Organizations.ListTeamMembers(teamID, nil)
-	return users, err
+	var opt = &github.OrganizationListTeamMembersOptions{
+		ListOptions: github.ListOptions{
+			PerPage: MAX_PAGE_SIZE,
+		},
+	}
+
+	var allMembers []*github.User
+	for {
+		members, resp, err := c.client.Organizations.ListTeamMembers(teamID)
+		if err != nil {
+			return nil, err
+		}
+
+		allMembers = append(allMembers, members...)
+		if resp.LastPage == 0 {
+			break
+		}
+		opt.Page = resp.NextPage
+	}
+
+	return allMembers, nil
 }
 
 func (c *GithubClient) GetTeamMembers(name string) ([]*github.User, error) {
@@ -49,8 +72,8 @@ func (c *GithubClient) GetTeamMembers(name string) ([]*github.User, error) {
 			break
 		}
 	}
-	users, _, err := c.client.Organizations.ListTeamMembers(*team.ID, nil)
-	return users, err
+
+	return c.GetTeamMembersByID(*team.ID)
 }
 
 func (c *GithubClient) GetTeamKeys(users []*github.User) []*github.Key {
